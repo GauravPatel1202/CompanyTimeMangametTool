@@ -1,0 +1,105 @@
+<md-dialog class="clientForm-modal">
+	<form name="resourceForm">
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2 ng-bind="ctrl.mode == 'edit'? 'Update Resource' : 'Create New Resource'"></h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="ctrl.close()">
+					&times;
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<md-dialog-content>
+			<div class="md-dialog-content">
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Employee ID</label>
+						<input required name="employeeId" ng-model="ctrl.data.empId" maxlength="4" ng-pattern="/^[0-9]{4}$/" ng-change="ctrl.onEmpIdChange(ctrl.mode)" >
+						<div ng-messages="(resourceForm.$submitted || resourceForm.employeeId.$touched) && resourceForm.employeeId.$error">
+							<div ng-message="required">This is required.</div>
+							<div ng-message="pattern">ID must be a 4 digit number.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Name</label>
+						<input required name="employeeName" ng-model="ctrl.data.empName" maxlength="50">
+						<div ng-messages="(resourceForm.$submitted || resourceForm.employeeName.$touched) && resourceForm.employeeName.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex="50">
+						<label>Date Of Orion Regn</label>
+						<md-datepicker required ng-model="ctrl.data.dateOfJoining" name="dateOfJoining" md-max-date="ctrl.today" class="doj-container" onkeydown="return false;" md-open-on-focus>
+						</md-datepicker>
+						<div ng-messages="(resourceForm.$submitted || resourceForm.dateOfJoining.$touched) && resourceForm.dateOfJoining.$error"
+						 role="alert">
+							<div ng-message-exp="['required']">
+								This is required.
+							</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex="{{ctrl.isAdminUser ? 25 : 50}}">
+						<label>Designation</label>
+						<md-select required ng-model="ctrl.data.designation" placeholder="Designation" name="role" ng-model-options="{trackBy: '$value.id'}">
+							<md-option ng-value="designation" ng-repeat="designation in ctrl.designations">{{ designation.designation }}</md-option>
+						</md-select>
+						<div ng-messages="(resourceForm.$submitted || resourceForm.role.$touched) && resourceForm.role.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<div flex="5" ng-if="ctrl.isAdminUser"></div>
+					<md-switch ng-if="ctrl.isAdminUser" class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="ctrl.isAdmin" flex-gt-sm>
+						<strong>Is Admin?</strong>
+					</md-switch>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block skills-selector" flex-gt-sm>
+						<label>Skills</label>
+						<md-select ng-model="ctrl.data.skill" placeholder="Skills" class="skills-selector" name="skill" multiple>
+							<md-option ng-value="skill" ng-repeat="skill in ctrl.skills">{{ skill }}</md-option>
+						</md-select>
+						<div ng-messages="(resourceForm.$submitted || resourceForm.skill.$touched) && resourceForm.skill.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Email Address</label>
+						<input required type="email" name="email" ng-model="ctrl.data.emailAddress" ng-pattern="/^.+@nalashaa.com$/" maxlength="50"
+						/>
+						<div ng-messages="(resourceForm.$submitted || resourceForm.email.$touched) && resourceForm.email.$error" role="alert">
+							<div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+								Enter a valid Nalashaa e-mail address.
+							</div>
+						</div>
+					</md-input-container>
+				</div>
+
+			</div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row">
+			<md-button data-dismiss="modal" ng-click="ctrl.clearForm(resourceForm)" class="md-raised md-default">
+				<i class="fa fa-eraser"> </i> Clear
+			</md-button>
+			<span flex></span>
+			<md-button data-dismiss="modal" ng-click="ctrl.save(resourceForm)" class="md-raised md-primary">
+				<i class="fa fa-floppy-o"> </i> Submit
+			</md-button>
+			<md-button data-dismiss="modal" ng-click="ctrl.close()" class="md-raised md-secondary">
+				<i class="fa fa-times"> </i> Cancel
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

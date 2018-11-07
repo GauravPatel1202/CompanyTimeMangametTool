@@ -1,0 +1,26 @@
+<md-dialog md-theme="{{ dialog.theme || dialog.defaultTheme }}" aria-label="{{ dialog.ariaLabel }}" class="or-confirm-modal" ng-class="dialog.css">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Confirmation</h2>
+            <span flex></span>
+            <h2><md-button class="md-icon-button" ng-click="dialog.abort()">
+                &times;
+            </md-button></h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content class="md-dialog-content" role="document" tabIndex="-1">
+        <h2 class="md-title">{{ dialog.title }}</h2>
+        <div ng-if="::dialog.mdHtmlContent" class="md-dialog-content-body" ng-bind-html="::dialog.mdHtmlContent"></div>
+        <div ng-if="::!dialog.mdHtmlContent" class="md-dialog-content-body">
+            <p>{{::dialog.mdTextContent}}</p>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-if="dialog.$type === 'confirm' || dialog.$type === 'prompt'" ng-click="dialog.abort()" class="md-secondary md-cancel-button md-raised"  md-autofocus="true">
+            {{ dialog.cancel }}
+        </md-button>
+        <md-button ng-click="dialog.hide()" class="md-primary md-raised md-confirm-button" ng-disabled="dialog.required && !dialog.result">
+            {{ dialog.ok }}
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

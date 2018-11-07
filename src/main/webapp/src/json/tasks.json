@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Calendar",
+    "description": null,
+    "code": null,
+    "maxHours": 200,
+    "endDate": null,
+    "type": null,
+    "status": null
+  },
+  {
+    "id": 2,
+    "name": "Roles",
+    "description": null,
+    "code": null,
+    "maxHours": 300,
+    "endDate": null,
+    "type": null,
+    "status": null
+  }
+]

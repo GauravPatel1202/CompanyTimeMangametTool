@@ -1,0 +1,104 @@
+<div class="container-fluid holiday-container timesheetCont">
+    <div class="or-page-header">Mark Holidays</div>
+    <!-- <form name="holidaysFetchForm">
+        <div layout="row">
+            <md-input-container class="md-block" flex="10">
+                <label>Select Year</label>
+                <md-select required ng-model="ctrl.selectedYear" placeholder="Year" name="project" ng-change="ctrl.fetchHolidays()">
+                    <md-option ng-value="year" ng-repeat="year in ctrl.yearList">{{year}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </form> -->
+    <div>
+        <!-- <h4 class="text-center">List of holidays</h4> -->
+        <form name="addDateForm" class="add-date-form">
+            <div layout="row">
+                <div flex="10"></div>
+                <div flex="10" layout="column">
+                    <div flex="40"></div>
+                    <md-input-container class="md-block">
+                        <label>Select Year</label>
+                        <md-select required ng-model="ctrl.selectedYear" placeholder="Year" name="project" ng-change="ctrl.fetchHolidays()">
+                            <md-option ng-value="year" ng-repeat="year in ctrl.yearList">{{year}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="5"></div>
+                <div flex="20" layout="column">
+                    <div flex="40"></div>
+                    <md-input-container class="md-block">
+                        <label>Select Date</label>
+                        <md-datepicker ng-model="ctrl.selectedDate" name="chosenDate" required md-min-date="ctrl.startDate" md-max-date="ctrl.endDate"
+                            onkeydown="return false;" md-open-on-focus>
+                        </md-datepicker>
+                        <div ng-messages="(addDateForm.$submitted || addDateForm.chosenDate.$touched) && addDateForm.chosenDate.$error" role="alert">
+                            <div ng-message-exp="['required']">
+                                This is required.
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div flex="1" layout="column" class="text-center">
+                    <div flex="40"></div>
+                    <md-button class="md-raised md-save" ng-click="ctrl.addDate(addDateForm)" flex="10">
+                        <i class="fa fa-angle-double-right"></i>
+                    </md-button>
+                </div>
+                <div flex="5"></div>
+                <div flex="30" class="holiday-list">
+                    <ul>
+                        <li layout="row" class="text-bold">
+                            <div flex="20" layout="column">
+                                <div flex="20"></div>
+                                <strong>Sl No.</strong>
+                            </div>
+                            <div flex="30" layout="column">
+                                <div flex="20"></div>
+                                <strong>Date</strong>
+                            </div>
+                            <div flex="40" layout="column">
+                                <div flex="20"></div>
+                                <strong>Day</strong>
+                            </div>
+                            <div flex="10">
+                                <strong>Action</strong>
+                            </div>
+                        </li>
+                        <li ng-repeat="holiday in ctrl.holidayList" layout="row">
+                            <div flex="20" layout="column">
+                                <div flex="20"></div>
+                                {{$index + 1}}
+                            </div>
+                            <div flex="30" layout="column">
+                                <div flex="20"></div>
+                                {{holiday.holidayDate | dateFormat}}
+                            </div>
+                            <div flex="40" layout="column">
+                                <div flex="20"></div>
+                                {{holiday.holidayDate | dayOfWeek}}
+                            </div>
+                            <div flex="10">
+                                <md-tooltip md-direction="top">Delete</md-tooltip>
+                                <i class="glyphicon glyphicon-trash text-red" ng-click="ctrl.removeHoliday($index)"></i>
+                            </div>
+                        </li>
+                        <li ng-if="ctrl.holidayList.length === 0" class="no-holidays">
+                            No holidays present.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div layout="row">
+            <div flex="65"></div>
+            <md-button class="md-raised md-primary" ng-disabled="ctrl.originalHolidays.length === 0 && ctrl.holidayList.length === 0"
+                ng-click="ctrl.updateHolidays()">
+                <i class="fa fa-check"> </i> Submit
+            </md-button>
+            <md-button class="md-raised md-secondary" ng-click="ctrl.fetchHolidays()">
+                <i class="fa fa-times"> </i> Undo
+            </md-button>
+        </div>
+    </div>
+</div>

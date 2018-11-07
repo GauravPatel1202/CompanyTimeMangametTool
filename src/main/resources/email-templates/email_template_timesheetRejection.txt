@@ -1,0 +1,7 @@
+Hi {{user}},
+
+	Your timesheet has been rejected for the following days:
+	{{dates}}
+    
+Regards,
+Team Orion.

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+	<div class="or-page-header">Clients</div>
+	<div class="text-right">
+		<md-button ng-click="ctrl.openClientModal()" class="md-raised md-primary">
+			<i class="fa fa-plus"> </i> Create New Client
+		</md-button>
+	</div>
+	<div>
+		<div id="grid1" ui-grid-pagination ui-grid="ctrl.gridOptions" class="grid">
+			<div class="watermark" ng-show="!ctrl.gridOptions.data.length">No clients available</div>
+		</div>
+	</div>
+</div>

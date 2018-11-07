@@ -1,0 +1,53 @@
+<md-dialog class="or-form-modal jira-import-modal">
+    <form name="jiraImportForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>JIRA Import</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="ctrl.close()">
+                    &times;
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h4>Jira Import Guidelines</h4>
+                <div>
+                    <ol class="upload-instruction-list">
+                        <li ng-repeat="item in ctrl.jiraInstructions">
+                            {{item}}
+                        </li>
+                    </ol>
+                </div>
+                <div class="text-right template-link">
+                    <a href="import/downloadjiratemplate" target="_blank"><b>Download Template</b></a>
+                </div>
+                <div layout="row">
+                    <label flex="10">File: </label>
+                    <div flex="5"></div>
+                    <input type="file" ng-model="ctrl.dataFile.attachment" ngf-select ngf-max-size="5MB" accept=".xlsx,.xls" required name="file" />
+                </div>
+                <div layout="row">
+                    <div flex="20"></div>
+                    <div ng-messages="(jiraImportForm.$submitted || jiraImportForm.file.$touched) && jiraImportForm.file.$error" role="alert"
+                        class="file-error text-red">
+                        <div ng-message-exp="['required']">
+                            Select a file.
+                        </div>
+                        <div ng-message-exp="['maxSize']">
+                            Maximum allowed file size is 5MB.
+                        </div>
+                    </div>
+                </div>
+                <div layout="row" class="resultant-file-link" ng-if="ctrl.showLink">
+                    <a id="download-link" href="{{ctrl.fileContent}}" download="{{ctrl.fileName}}" target="_blank">Resultant File</a>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised md-primary" ng-click="ctrl.uploadFile(jiraImportForm)">Upload</md-button>
+            <md-button class="md-raised md-secondary" ng-click="ctrl.close()">cancel</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

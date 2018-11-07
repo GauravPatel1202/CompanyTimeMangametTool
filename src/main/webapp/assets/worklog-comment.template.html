@@ -1,0 +1,12 @@
+<div class="task-desc-content">
+    <md-input-container class="md-block" flex-gt-sm ng-if="column.hoursSpent > 0 && column.status.id !== 1 && column.status.id !== 2">
+        <label>Comments</label>
+        <textarea name="desc" class="" ng-model="column.comments" ng-change="viewObj.enableSave()"  max-length="255" ng-disabled="!row.project || ((!row.project.globalProject && !row.approver) && role != 'Team Member' && !row.newRow) || !row.task || viewObj.isValidDate(row.task.startDate,row.task.endDate,key,row.project.startDate,row.project.endDate,row.project) || (column.status && (column.status.id === 2 || (column.status.id === 1 && !viewObj.managerMode)) || !viewObj.editMode || ( viewObj.managerMode && viewObj.managerProjects.indexOf(row.project.id) < 0)) || !row.task.status"></textarea>
+    </md-input-container>
+    <div ng-if="column.hoursSpent > 0 && (column.status.id === 1 || column.status.id === 2)">
+        {{column.comments || "No comments available"}}
+    </div>
+    <div ng-if="!column.hoursSpent" class="text-warn">
+        Please enter hours before entering the comments.
+    </div>
+</div>

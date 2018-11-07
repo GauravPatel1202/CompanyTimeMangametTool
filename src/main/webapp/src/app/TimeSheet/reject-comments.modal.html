@@ -1,0 +1,34 @@
+<md-dialog class="or-form-modal reject-comments-modal">
+    <form name="rejectionForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Reject Timesheet Hours</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="ctrl.close()">
+                    &times;
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <p>Only the submitted records will be rejected. Please enter the rejection reason below.</p>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Comments</label>
+                        <textarea name="comment" ng-model="ctrl.rejectComment" required></textarea>
+                        <div ng-messages="(rejectionForm.$submitted || rejectionForm.comment.$touched) && rejectionForm.comment.$error" role="alert">
+                            <div ng-message-exp="['required']">
+                                Please enter the comments.
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button data-dismiss="modal" class="md-raised md-primary" ng-click="ctrl.rejectEntries(rejectionForm)">
+                <i class="fa fa-times"> </i> Reject
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,29 @@
+<div class="container-fluid map-resource-container">
+    <div class="or-page-header" ng-bind="ctrl.userRole === 1 ? 'Allocate Resource To Project' : 'View Resource Allocation'"></div>
+    <form name="projectForm">
+	    <div class="map-resource-form" layout-gt-sm="row">
+	           <md-input-container class="md-block project-selector" flex="15">
+	               <label>Project</label>
+	               <md-select ng-model="ctrl.project" name="project" required placeholder="Project" md-no-asterisk="false" ng-change="ctrl.onProjectSelect($event)">
+	                   <md-option ng-repeat="project in ctrl.projects" ng-value="project">{{project.projectName}}</md-option>
+	               </md-select>
+	               <div ng-messages="(projectForm.$submitted || projectForm.project.$touched) && projectForm.project.$error" role="alert">
+	                    <div ng-message-exp="['required']">
+	                        Choose a project.
+	                    </div>
+	                </div>
+	           </md-input-container>
+	           <div flex="80"></div>
+	           <div layout="column" layout-align="center center" ng-if="ctrl.userRole === 1">
+					<md-button class="md-raised md-primary" ng-click="ctrl.openModal(null,projectForm)" flex="50">
+						<i class="fa fa-plus"></i> Allocate New Resource
+					</md-button>
+	           </div>
+		</div>
+	</form>
+    <div>
+		<div id="grid1" ui-grid-pagination ui-grid="ctrl.gridOptions" class="grid">
+			<div class="watermark" ng-show="!ctrl.gridOptions.data.length">No resources allocated</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+<div class="container-fluid">
+	<div class="or-page-header">Projects</div>
+	<div class="text-right">
+		<md-button ng-click="ctrl.editProject()" class="md-raised md-primary">
+			<i class="fa fa-plus"> </i> Create New Project
+		</md-button>
+	</div>
+	<div id="grid1" ui-grid-pagination ui-grid="ctrl.gridOptions" class="grid">
+		<div class="watermark" ng-show="!ctrl.gridOptions.data.length">No projects available</div>
+	</div>
+</div>

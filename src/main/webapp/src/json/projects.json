@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "Nerve24",
+    "code": "NV123",
+    "type": "Dev",
+    "client": {
+      "id": 1,
+      "name": "nerve24",
+      "active": false
+    }
+  },
+    {
+    "id": 2,
+    "name": "Nerve24",
+    "code": "NV123",
+    "type": "Dev",
+    "client": {
+      "id": 2,
+      "name": "nerve24",
+      "active": false
+    }
+  }
+]

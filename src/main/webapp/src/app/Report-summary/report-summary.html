@@ -1,0 +1,126 @@
+<div class="container-fluid timesheetCont bulk-approval-container">
+	<div class="or-page-header">{{ctrl.title}}</div>
+	<form name="reportSummaryForm">
+		<div layout="row">
+			<md-input-container class="md-block" flex="20">
+				<label>Select Month</label>
+				<md-datepicker ng-model="ctrl.selectedMonth" md-mode="month" name="selectMonth" required md-date-locale="{ monthParser: true }"
+				 onkeydown="return false;" md-open-on-focus></md-datepicker>
+				<div ng-messages="(reportSummaryForm.$submitted || reportSummaryForm.selectMonth.$touched) && reportSummaryForm.selectMonth.$error"
+				 role="alert">
+					<div ng-message-exp="['required']">
+						This is required.
+					</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex="15" ng-if="!ctrl.monthlyView">
+				<label>Project Name</label>
+				<md-select required ng-model="ctrl.selectedProject" placeholder="Project Name" ng-change="ctrl.onProjectSelect()" name="project"
+				 ng-model-options="{trackBy: '$value.id'}">
+					<md-option ng-value="project" ng-repeat="project in ctrl.projectList">{{project.projectName}}</md-option>
+				</md-select>
+				<div ng-messages="(reportSummaryForm.$submitted || reportSummaryForm.project.$touched) && reportSummaryForm.project.$error">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+			<div flex="5"></div>
+			<div flex="5" layout="column">
+				<div flex="10"></div>
+				<md-button flex="40" class="md-raised md-primary" id="fetch-monthly-view" ng-init="ctrl.initialMonthlyView(reportSummaryForm)"
+				 ng-click="ctrl.fetchTimesheet(reportSummaryForm)">
+					Go
+					<i class="fa fa-arrow-right"> </i>
+				</md-button>
+				<div flex="50"></div>
+			</div>
+			<div flex="70" ng-if="ctrl.monthlyView && ctrl.chartData && ctrl.chartData.length > 0" layout="row" layout-align="end">
+				<div layout="column">
+					<div flex="10"></div>
+					<md-button flex="40" class="md-raised md-save" ng-click="ctrl.goToChart()">
+						Go to chart
+					</md-button>
+				</div>
+			</div>
+			<!-- <div flex="5" layout="column" ng-if="ctrl.monthlyView && ctrl.chartData && ctrl.chartData.length > 0">
+				<div flex="10"></div>
+				<md-button flex="40" class="md-raised md-save" ng-click="ctrl.goToChart()">
+					Go to chart
+				</md-button>
+			</div> -->
+			<div flex="70" ng-if="!ctrl.monthlyView" layout="row" layout-align="end">
+				<div layout="column">
+					<div flex="10"></div>
+					<md-button class="md-raised md-save" ng-if="ctrl.gridOptions.data.length > 0" ng-click="ctrl.export()">export table view</md-button>
+				</div>
+				<div layout="column">
+					<div flex="10"></div>
+					<md-button class="md-raised md-primary" ng-if="ctrl.gridOptions.data.length > 0" ng-click="ctrl.exportPMOReport()">export report view</md-button>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!-- <div layout="row" ng-if="!ctrl.monthlyView" layout-align="end">
+		<md-button class="md-raised md-save" ng-if="ctrl.gridOptions.data.length > 0" ng-click="ctrl.export()">export table view</md-button>
+		<md-button class="md-raised md-primary" ng-if="ctrl.gridOptions.data.length > 0" ng-click="ctrl.exportPMOReport()">export report view</md-button>
+	</div> -->
+	<div ng-if="!ctrl.monthlyView">
+		<div id="grid1" ui-grid="ctrl.gridOptions" class="grid report-grid" ui-grid-grouping ui-grid-exporter>
+			<div class="watermark" ng-show="!ctrl.gridOptions.data.length">No records available</div>
+		</div>
+		<div id="grid1" ui-grid="ctrl.reportOptions" class="grid" ng-show="false" ui-grid-grouping ui-grid-exporter></div>
+	</div>
+	<div ng-if="ctrl.monthlyView">
+		<div id="grid1" ui-grid="ctrl.gridOptions" class="grid report-grid">
+			<div class="watermark" ng-show="!ctrl.gridOptions.data.length">No records available</div>
+		</div>
+	</div>
+	<div class="bd-example text-right">
+		<div class="col-md-6 time-sheet-legend text-left">
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-blue"></div>
+				</div>
+				<div class="col-md-9">Saved</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-yellow"></div>
+				</div>
+				<div class="col-md-9">Submitted</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-green"></div>
+				</div>
+				<div class="col-md-9">Approved</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-red"></div>
+				</div>
+				<div class="col-md-9">Rejected</div>
+			</div>
+		</div>
+	</div>
+	<div ng-if="ctrl.monthlyView && ctrl.chartData && ctrl.chartData.length > 0" id="chart" class="monthly-chart">
+		<div class="or-page-header">
+			<span> {{ "Effort Distribution" + " " }} </span>
+			<span>
+				<md-tooltip md-direction="top" class="task-desc-tooltip">Click on the legend entry to toggle the respective item from distribution.</md-tooltip>
+				<i class="fa fa-info-circle chart-info-icon"></i>
+			</span>
+		</div>
+		<div layout="row" layout-align="center">
+			<div flex="50">
+				<canvas id="pie" class="chart chart-pie" chart-data="ctrl.chartData" chart-labels="ctrl.chartLabels" chart-dataset-override="ctrl.dataSets"
+				 chart-options="ctrl.chartOptions"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="taskDesc.html">
+	<div class="task-desc-content">
+		{{COL_FIELD.description}}
+	</div>
+	{{row}}
+</script>

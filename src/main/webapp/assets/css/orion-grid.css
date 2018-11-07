@@ -1,0 +1,87 @@
+.grid.ui-grid{
+	font-size: 15px;
+	border: none;
+}
+.taskForm-modal .grid.ui-grid{
+	height: 363px;
+	border: 1px solid #d4d4d4;
+}
+.grid.ui-grid .ui-grid-header-cell-primary-focus{
+	outline: none;
+}
+.grid.ui-grid i:focus{
+	outline: none;
+}
+.grid.ui-grid .ui-grid-contents-wrapper .ui-grid-header .ui-grid-top-panel{
+    background: #587ca0;
+    color: #FFF;
+}
+.ui-grid-row:nth-child(even) .ui-grid-cell,
+.ui-grid-row:nth-child(even):not(.ui-grid-row-selected) .ui-grid-cell.ui-grid-row-header-cell{
+	background-color: #dae2ea;
+}
+.ui-grid-row:nth-child(odd):not(.ui-grid-row-selected) .ui-grid-cell.ui-grid-row-header-cell{
+	background-color: #fff;
+}
+.ui-grid-row .ui-grid-cell.action-icons{
+	padding-top: 5px;
+}
+.grid.ui-grid .ui-grid-contents-wrapper .ui-grid-header .ui-grid-top-panel .ui-grid-filter-container{
+	color: #000;
+	font-size: 14px;
+	font-weight: normal;
+}
+.grid.ui-grid .ui-grid-contents-wrapper .ui-grid-header .ui-grid-top-panel .ui-grid-filter-container input{
+	padding-left: 5px;
+}
+.grid.ui-grid .ui-grid-pager-panel .ui-grid-pager-row-count-picker{
+	display: none;
+}
+.pagination>li a:focus,
+.pagination>li:focus{
+	outline: none;
+}
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover{
+	background-color: #587ca0;
+	border-color: #587ca0;
+}
+.pagination>li>a,
+.pagination>li>span{
+	color: #587ca0;
+}
+.ui-grid-pager-panel .ui-grid-pager-container .page-info{
+	margin-left: 25px;
+}
+i.icon-edit-row,
+.grid.ui-grid i.icon-edit-row{
+	margin-right: 15px;
+}
+.grid.ui-grid i.icon-delete-row{
+	margin-left: 15px;
+}
+
+.ui-grid-row .ui-grid-cell{
+	border-bottom-width: 1px;
+	border-bottom-color: #d4d4d4;
+    border-bottom-style: solid;
+}
+ 
+.ui-grid-header-cell .ui-grid-selection-row-header-buttons::before{
+	opacity: 1;
+}
+.ui-grid-selection-row-header-buttons.ui-grid-all-selected::before{
+	color: black;
+}
+.ui-grid-header-cell .ui-grid-selection-row-header-buttons{
+	background: white;
+    border-radius: 12px;
+    margin-top: 60%;
+}
+.ui-grid-selection-row-header-buttons:focus{
+	outline: none;
+}

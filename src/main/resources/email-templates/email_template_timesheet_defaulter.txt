@@ -1,0 +1,6 @@
+Hi {{user}},
+
+	It appears that your timesheet for the week {{startDate}} to {{endDate}} is not filled.
+
+Regards,
+Team Orion.

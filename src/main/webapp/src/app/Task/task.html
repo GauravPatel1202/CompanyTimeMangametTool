@@ -1,0 +1,13 @@
+<div class="container-fluid">
+	<div class="or-page-header">{{taskCtrl.title}}</div>
+	<div class="text-right">
+		<md-button ng-click="taskCtrl.openTaskModal()" class="md-raised md-primary">
+			<i class="fa fa-plus"> </i> Create New Task
+		</md-button>
+	</div>
+	<div>
+		<div id="grid1" ui-grid-pagination ui-grid="taskCtrl.gridOptions" class="grid">
+			<div class="watermark" ng-show="!taskCtrl.gridOptions.data.length">No tasks available</div>
+		</div>
+	</div>
+</div>

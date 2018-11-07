@@ -1,0 +1,114 @@
+<md-dialog class="or-form-modal resource-map-modal">
+	<form name="mapresourceForm">
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2 ng-bind="ctrl.mode == 'edit'? 'Update Resource Allocation - {{ctrl.project.projectName}}' : 'Allocate New Resource - {{ctrl.project.projectName}}'"></h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="ctrl.close()">
+					&times;
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div class="md-dialog-content">
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm ng-if="false">
+						<label>Project</label>
+						<md-select ng-model="ctrl.project" name="project" placeholder="Project" class="md-no-underline" ng-disabled="true">
+							<md-option ng-repeat="project in ctrl.data.projects" ng-value="project">{{project.projectName}}</md-option>
+						</md-select>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm ng-if="ctrl.mode === 'edit'">
+						<label>Resource</label>
+						<md-select ng-model="ctrl.resource" name="resource" placeholder="Resource" required md-no-asterisk="false" ng-disabled="ctrl.mode === 'edit'">
+							<md-option ng-repeat="resource in ctrl.data.resources" ng-value="resource.personId">{{resource.empName}}</md-option>
+						</md-select>
+						<div ng-messages="(mapresourceForm.$submitted || mapresourceForm.resource.$touched) && mapresourceForm.resource.$error" role="alert">
+							<div ng-message-exp="['required']">
+								Choose a resource.
+							</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm ng-if="ctrl.mode === 'create'">
+						<label>Resource</label>
+						<md-select ng-model="ctrl.resource" name="resource" placeholder="Resource" required md-no-asterisk="false" ng-disabled="ctrl.mode === 'edit'">
+							<md-option ng-repeat="resource in ctrl.data.resources" ng-value="resource.id">{{resource.empName}}</md-option>
+						</md-select>
+						<div ng-messages="(mapresourceForm.$submitted || mapresourceForm.resource.$touched) && mapresourceForm.resource.$error" role="alert">
+							<div ng-message-exp="['required']">
+								Choose a resource.
+							</div>
+						</div>
+					</md-input-container>
+					<div flex="5"></div>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>role</label>
+						<md-select ng-model="ctrl.role" name="role" placeholder="Role" required md-no-asterisk="false">
+							<md-option ng-repeat="role in ctrl.data.roles" ng-value="role.id">{{role.roleName}}</md-option>
+						</md-select>
+						<div ng-messages="(mapresourceForm.$submitted || mapresourceForm.role.$touched) && mapresourceForm.role.$error" role="alert">
+							<div ng-message-exp="['required']">
+								Choose a Role.
+							</div>
+						</div>
+					</md-input-container>
+				</div>
+				<!-- <div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Allocation Start Date</label>
+						<md-datepicker required ng-model="ctrl.data.startDate" name="startDate" md-max-date="ctrl.data.endDate" class="doj-container">
+						</md-datepicker>
+						<div ng-messages="(mapresourceForm.$submitted || mapresourceForm.startDate.$touched) && mapresourceForm.startDate.$error" role="alert">
+							<div ng-message-exp="['required']">
+								This is required.
+							</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Allocation End Date</label>
+						<md-datepicker required ng-model="ctrl.data.endDate" md-min-date="ctrl.data.startDate || ctrl.today" name="endDate" class="doj-container">
+						</md-datepicker>
+						<div ng-messages="(mapresourceForm.$submitted || mapresourceForm.endDate.$touched) && mapresourceForm.endDate.$error" role="alert">
+							<div ng-message-exp="['required']">
+								This is required.
+							</div>
+						</div>
+					</md-input-container>
+				</div> -->
+				<div layout-gt-sm="row">
+					<!-- <md-input-container class="md-block" flex-gt-sm>
+		                <label>role</label>
+		                <md-select ng-model="ctrl.role" name="role" placeholder="Role" required md-no-asterisk="false">
+		                    <md-option ng-repeat="role in ctrl.data.roles" ng-value="role.id">{{role.roleName}}</md-option>
+		                </md-select>
+		                <div ng-messages="(mapresourceForm.$submitted || mapresourceForm.role.$touched) && mapresourceForm.role.$error" role="alert">
+		                    <div ng-message-exp="['required']">
+		                        Choose a Role.
+		                    </div>
+		                </div>
+		            </md-input-container> -->
+					<!-- <div flex="5"></div> -->
+					<div layout-gt-sm="row" layout-align="start center" flex-gt-sm>
+						<label flex="20">Allocation Type: </label>
+						<md-radio-group ng-model="ctrl.resourceAllocation" required class="md-block" flex="45" layout="row" layout-padding layout-align="start center">
+							<md-radio-button flex="9" ng-value="true" class="md-primary">Full</md-radio-button>
+							<md-radio-button flex="9" ng-value="false" class="md-primary">Partial</md-radio-button>
+						</md-radio-group>
+					</div>
+				</div>
+			</div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row">
+			<md-button data-dismiss="modal" class="md-raised md-primary" ng-click="ctrl.mapResource(mapresourceForm)" ng-if="ctrl.mode === 'create'">
+				<i class="fa fa-floppy-o"> </i> Submit
+			</md-button>
+			<md-button data-dismiss="modal" class="md-raised md-primary" ng-click="ctrl.updateMapping(mapresourceForm)" ng-if="ctrl.mode === 'edit'">
+				<i class="fa fa-floppy-o"> </i> Submit
+			</md-button>
+			<md-button data-dismiss="modal" class="md-raised md-secondary" ng-click="ctrl.close()">
+				<i class="fa fa-times"> </i> Cancel
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

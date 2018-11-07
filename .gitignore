@@ -1,0 +1,8 @@
+/.apt_generated/
+/target/
+.settings/
+logs/
+.metadata/
+Servers/
+RemoteSystemsTempFiles/
+*.rej

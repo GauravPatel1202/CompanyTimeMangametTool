@@ -1,0 +1,122 @@
+<nav class="navbar navbar-default" ng-if="loginPage===false" ng-controller="HeaderCtrl as header">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img class="header-logo pull-left" src="assets/img/logo.png"></img>
+            <a class="navbar-brand" style="color: lightcyan !important;background-color: transparent;">Orion</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right" ng-if="!header.isFirstLogin">
+                <li ng-class="{'active-header':state == 'timesheet'}" ng-click="header.selectedUser= null;">
+                    <a href="#timesheet/">My TimeSheet</a>
+                </li>
+                <li class="dropdown" ng-class="{'active-header': state == 'timesheetApproval' || state === 'bulkApproval' || state === 'reportSummary' || state === 'monthlyView'}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Review
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu show-cursor">
+                        <li ng-if="role != 'Team Member'">
+                            <a ng-click="header.goToTimesheetApproval()">Approval</a>
+                        </li>
+                        <li ng-if="role === 'Project Manager' || role === 'Admin'">
+                            <a ng-click="header.goToBulkApproval()">Bulk Approval</a>
+                        </li>
+                        <li ng-if="role === 'Project Manager' || role === 'Admin'">
+                            <a ng-click="header.goToReportSummary()">Report Summary</a>
+                        </li>
+                        <li>
+                            <a ng-click="header.goToMonthlyView()">Monthly View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-class="{'active-header': state === 'projects' || state === 'resources' || state === 'task' || state === 'client' || state === 'mapresource'}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" ng-if="role === 'Project Manager' || role === 'Admin' || role === 'Team Lead'"
+                        aria-expanded="false">Setup
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu show-cursor">
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.goToClient()">Client</a>
+                        </li>
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.goToProjects()">Project</a>
+                        </li>
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.goToResource()">Resource</a>
+                        </li>
+                        <li ng-if="role === 'Project Manager'">
+                            <a ng-click="header.goToResourceMapping()">View Resource Allocation</a>
+                        </li>
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.goToResourceMapping()">Allocate Resource</a>
+                        </li>
+                        <li>
+                            <a ng-click="header.goToTask()">Tasks</a>
+                        </li>
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.goToHolidayMark()">Mark Holidays</a>
+                        </li>
+                        <li ng-if="role !== 'Team Member'">
+                            <a ng-click="header.openJiraImport()">JIRA Import</a>
+                        </li>
+                        <li ng-if="role === 'Admin'">
+                            <a ng-click="header.purgeData()">Data Purge</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-class="{'active-header': state === 'changePassword'}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">
+                        {{user.empName}}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu show-cursor">
+                        <li>
+                            <a ng-click="header.changePassword()" style="cursor: pointer"> Change Password</a>
+                        </li>
+                        <li>
+                            <a ng-click="header.logOut()" style="cursor: pointer"> Sign Out</a>
+                        </li>
+                    </ul>
+                </li>
+                <li ng-click="header.alertTask()">
+                <a  class="notification" ng-class="{'active-header': state === 'projects' || state === 'resources' || state === 'task' || state === 'client' || state === 'mapresource'}">
+  					<span>Alert </span>
+ 				 	<span class="badge">3</span>
+				</a></li>
+                <li class="user-info">
+                    <md-tooltip md-direction="bottom">orion_helpdesk@nalashaa.com</md-tooltip>
+                    <a>
+                        <i class="fa fa-question-circle help-icon"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="header.isFirstLogin">
+                <li class="dropdown" ng-class="{'active-header': state === 'changePassword'}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">
+                        {{user.empName}}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu show-cursor">
+                        <li>
+                            <a ng-click="header.changePassword()" style="cursor: pointer"> Change Password</a>
+                        </li>
+                        <li>
+                            <a ng-click="header.logOut()" style="cursor: pointer"> Sign Out</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="user-info">
+                    <md-tooltip md-direction="bottom">orion_helpdesk@nalashaa.com</md-tooltip>
+                    <a>
+                        <i class="fa fa-question-circle help-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

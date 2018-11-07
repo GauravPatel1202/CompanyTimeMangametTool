@@ -1,0 +1,37 @@
+<div class="ui-grid-pager-panel" ui-grid-pager ng-show="grid.options.enablePaginationControls">
+        <div role="navigation" class="ui-grid-pager-container">
+            <div class="ui-grid-pager-control">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li ng-click="pageFirstPageClick()" ng-class="{'disabled' : cantPageBackward()}">
+                            <a aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li ng-click="pagePreviousPageClick()" ng-class="{'disabled' : cantPageBackward()}">
+                            <a aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        <li ng-repeat="page in paginationApi.getTotalPages().getPageArray(paginationApi.getPage())" ng-click="paginationApi.seek(page)" ng-class="{ 'active': paginationApi.getPage() === page }">
+                        	<a aria-label="Previous">
+                                <span aria-hidden="true">{{page}}</span>
+                            </a>
+                        </li>
+                        <li ng-click="pageNextPageClick()" ng-class="{'disabled' : cantPageForward()}">
+                            <a aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li ng-click="pageLastPageClick()" ng-class="{'disabled' : cantPageToLast()}">
+                            <a aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <span class="page-info" ng-show="grid.options.totalItems > 0">Showing {{ 1 + paginationApi.getFirstRowIndex() }}
+                    - {{ 1 + paginationApi.getLastRowIndex() }} of {{grid.options.totalItems}} {{totalItemsLabel}}</span>
+            </div>
+        </div>
+    </div>

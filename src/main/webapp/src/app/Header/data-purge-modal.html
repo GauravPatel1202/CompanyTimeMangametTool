@@ -1,0 +1,29 @@
+<md-dialog class="or-form-modal jira-import-modal">
+    <form name="jiraImportForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Data Purge (Beyond 13 months)</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="ctrl.close()">
+                    &times;
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div>
+                    <ol class="upload-instruction-list">
+                        <li ng-repeat="item in ctrl.purge_instructions">
+                            {{item}}
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised md-primary" ng-click="ctrl.purgeData()">Purge</md-button>
+            <md-button class="md-raised md-secondary" ng-click="ctrl.close()">cancel</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,81 @@
+<div layout="row" >
+	<div flex>
+	</div>
+	<div flex>
+		<div class="or-page-header">Alert Configuration</div>
+		<form name="alertConfigurationForm">
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Remind Timesheet Submission</label>
+					<md-select required ng-model="ctrl.data.reminder" placeholder="Remind Timesheet Submission" name="reminder">
+						<md-option ng-value="reminder" ng-repeat="reminder in ctrl.days">{{ reminder }}</md-option>
+					</md-select>
+					<div ng-messages="(alertConfigurationForm.$submitted || alertConfigurationForm.reminder.$touched) && alertConfigurationForm.reminder.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>First Email Notification on Timsheet Submission</label>
+					<md-select required ng-model="ctrl.data.firstMailNotification" placeholder="First Email Notification on Timsheet Submission" name="firstMailNotification">
+						<md-option ng-value="firstMailNotification" ng-repeat="firstMailNotification in ctrl.days">{{ firstMailNotification }}</md-option>
+					</md-select>
+					<div ng-messages="(alertConfigurationForm.$submitted || alertConfigurationForm.firstMailNotification.$touched) && alertConfigurationForm.firstMailNotification.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Second Email Notification on Timsheet Submission</label>
+					<md-select required ng-model="ctrl.data.secondEmailNotification" placeholder="Second Email Notification on Timsheet Submission" name="secondEmailNotification">
+						<md-option ng-value="secondEmailNotification" ng-repeat="secondEmailNotification in ctrl.days">{{ secondEmailNotification }}</md-option>
+					</md-select>
+					<div ng-messages="(alertConfigurationForm.$submitted || alertConfigurationForm.secondEmailNotification.$touched) && alertConfigurationForm.secondEmailNotification.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Escalate to Project Manager</label>
+					<md-select required ng-model="ctrl.data.escalate" placeholder="Escalate to Project Manager" name="escalate">
+						<md-option ng-value="escalate" ng-repeat="escalate in ctrl.days">{{ escalate }}</md-option>
+					</md-select>
+					<div ng-messages="(alertConfigurationForm.$submitted || alertConfigurationForm.escalate.$touched) && alertConfigurationForm.escalate.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Set Alert Frequency</label>
+					<md-select required ng-model="ctrl.data.frequency" placeholder="Set Alert Frequency" name="frequency">
+						<md-option ng-value="frequency" ng-repeat="frequency in ctrl.hours">{{ frequency }}</md-option>
+					</md-select>
+					<div ng-messages="(alertConfigurationForm.$submitted || alertConfigurationForm.frequency.$touched) && alertConfigurationForm.frequency.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<div layout-gt-sm="row">
+				<span flex></span>
+				<md-button ng-click="ctrl.update(alertConfigurationForm)" class="md-raised md-primary">
+					<i class="fa fa-floppy-o"> </i> Submit
+				</md-button>
+				<md-button ng-click="ctrl.cancel()" class="md-raised md-secondary">
+					<i class="fa fa-times"> </i> Cancel
+				</md-button>
+			</div>
+
+		</form>
+	</div>
+	<div flex>
+	</div>
+</div>

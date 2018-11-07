@@ -1,0 +1,119 @@
+<md-dialog class="taskForm-modal or-form-modal">
+	<form name="taskForm">
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2 ng-bind="ctrl.mode == 'edit'? 'Update Task' : 'Create New Task'"></h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="ctrl.close()">
+					&times;
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div class="md-dialog-content">
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Project Name</label>
+						<md-select required ng-disabled="ctrl.mode === 'edit' " ng-model="ctrl.data.project" placeholder="Project Name" ng-change="ctrl.onProjectSelect()"
+						 name="project" ng-model-options="{trackBy: '$value.id'}">
+							<md-option ng-value="project" ng-repeat="project in ctrl.projects">{{project.projectName}}</md-option>
+						</md-select>
+						<div ng-messages="(taskForm.$submitted || taskForm.project.$touched) && taskForm.project.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Task ID</label>
+						<input required name="taskId" ng-model="ctrl.data.taskId" maxlength="10" ng-pattern="/^[a-zA-Z0-9_]+$/">
+						<div ng-messages="(taskForm.$submitted || taskForm.taskId.$touched) && taskForm.taskId.$error">
+							<div ng-message="required">This is required.</div>
+							<div ng-message="pattern">ID can contain _ and alphanumeric characters.</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Task Name</label>
+						<input required name="taskName" ng-model="ctrl.data.taskName" maxlength="50">
+						<div ng-messages="(taskForm.$submitted || taskForm.taskName.$touched) && taskForm.taskName.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Task Description</label>
+						<input name="taskDesc" ng-model="ctrl.data.description" maxlength="255">
+					</md-input-container>
+				</div>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Estimated Hours</label>
+						<input required type="number" min="0.1" max="999.99" step="1" ng-pattern="/^[0-9]+([\.][0-9]{1,2})?$/" name="estimatedHours"
+						 ng-model="ctrl.data.estimatedHours" ng-disabled="ctrl.mode === 'edit' && ctrl.userRoleId === 3" />
+						<div ng-messages="(taskForm.$submitted || taskForm.estimatedHours.$touched) && taskForm.estimatedHours.$error" role="alert">
+							<div ng-message="required">
+								This is required
+							</div>
+							<div ng-message-exp="['min','max']">
+								Enter a positive between 0.1 to 999.99.
+							</div>
+							<div ng-message="pattern">
+								Hours must be less than 1000 & upto 2 decimals.
+							</div>
+						</div>
+					</md-input-container>
+					<div flex="5"></div>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Reasons for change in hours</label>
+						<textarea name="updateReason" class="update-reason-comments" ng-disabled="(ctrl.mode === 'edit' && ctrl.userRoleId === 3)||ctrl.mode === 'create'" ng-model="ctrl.data.updateReason" max-length="500"></textarea>
+					</md-input-container>
+					<div flex="5"></div>
+					<md-switch class="md-primary" md-no-ink ng-model="ctrl.data.active" flex-gt-sm>
+						<strong>Is Active?</strong>
+					</md-switch>
+				</div>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Hours Consumed</label>
+						<input type="number" step="1" name="hoursConsumed"
+						 ng-model="ctrl.data.hoursConsumed" ng-disabled="ctrl.mode === 'edit'||ctrl.mode === 'create'" />
+						<!-- <div ng-messages="(taskForm.$submitted || taskForm.estimatedHours.$touched) && taskForm.estimatedHours.$error" role="alert">
+							<div ng-message="required">
+								This is required
+							</div>
+							<div ng-message-exp="['min','max']">
+								Enter a positive between 0.1 to 999.99.
+							</div>
+							<div ng-message="pattern">
+								Hours must be less than 1000 & upto 2 decimals.
+							</div>
+						</div> -->
+					</md-input-container>
+					<div flex="5"></div>
+				</div>
+				<div layout-gt-sm="row">
+					<div flex-gt-sm>
+						<div layout-gt-sm="row">
+							<div flex="20">
+								<input type="checkbox" name="assignAll" ng-model="ctrl.selectAll" ng-click="ctrl.assignAll()" /> Assign All</div>
+						</div>
+						<div id="grid1" ui-grid="ctrl.resourceGridOptions" class="grid">
+							<div class="watermark" ng-show="!ctrl.resourceGridOptions.data.length">No resources allocated to the project.</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row">
+			<md-button data-dismiss="modal" ng-click="ctrl.clearForm(taskForm)" class="md-raised md-default">
+				<i class="fa fa-eraser"> </i> Clear
+			</md-button>
+			<span flex></span>
+			<md-button data-dismiss="modal" ng-click="ctrl.save(taskForm)" class="md-raised md-primary">
+				<i class="fa fa-floppy-o"> </i> Submit
+			</md-button>
+			<md-button data-dismiss="modal" ng-click="ctrl.close()" class="md-raised md-secondary">
+				<i class="fa fa-times"> </i> Cancel
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

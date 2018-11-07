@@ -1,0 +1,110 @@
+<md-dialog class="clientForm-modal">
+	<form name="projectForm">
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2 ng-bind="ctrl.mode == 'edit'? 'Update Project' : 'Create New Project'"></h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="ctrl.close()">
+					&times;
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<md-dialog-content>
+			<div class="md-dialog-content">
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Client Name</label>
+						<md-select required ng-model="ctrl.data.client" placeholder="Client Name" name="client" ng-model-options="{trackBy: '$value.id'}">
+    					<md-option ng-value="client" ng-repeat="client in ctrl.clients">{{ client.name }}</md-option>
+  					</md-select>
+						<div ng-messages="(projectForm.$submitted || projectForm.client.$touched) && projectForm.client.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Project ID</label>
+						<input required name="projectId" ng-model="ctrl.data.projectId" maxlength="10" ng-pattern="/^[a-zA-Z0-9_]+$/">
+						<div ng-messages="(projectForm.$submitted || projectForm.projectId.$touched) && projectForm.projectId.$error">
+							<div ng-message="required">This is required.</div>
+							<div ng-message="pattern">ID can contain _ and alphanumeric characters.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Project Name</label>
+						<input required name="projectName" ng-model="ctrl.data.projectName" maxlength="50">
+						<div ng-messages="(projectForm.$submitted || projectForm.projectName.$touched) && projectForm.projectName.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Billing Type</label>
+						<md-select required ng-model="ctrl.data.billingType" placeholder="Billing Type" name="billingType">
+    					<md-option ng-value="type" ng-repeat="type in ctrl.billingTypes">{{ type }}</md-option>
+  					</md-select>
+						<div ng-messages="(projectForm.$submitted || projectForm.billingType.$touched) && projectForm.billingType.$error">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+
+				</div>
+				<div layout-gt-sm="row">
+					<md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="ctrl.data.globalProject" flex-gt-sm>
+						<strong>Global Project</strong>
+					</md-switch>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Start Date</label>
+							<md-datepicker
+								required
+								ng-model="ctrl.data.startDate"
+								name="startDate"
+								md-max-date="ctrl.data.endDate" onkeydown="return false;" md-open-on-focus>
+							</md-datepicker>
+						<div ng-messages="(projectForm.$submitted || projectForm.startDate.$touched) && projectForm.startDate.$error" role="alert">
+							<div ng-message-exp="['required']">
+								This is required.
+							</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>End Date</label>
+							<md-datepicker
+								required
+								ng-model="ctrl.data.endDate"
+								md-min-date="ctrl.data.startDate || ctrl.today"
+								name="endDate" onkeydown="return false;" md-open-on-focus>
+							</md-datepicker>
+						<div ng-messages="(projectForm.$submitted || projectForm.endDate.$touched) && projectForm.endDate.$error" role="alert">
+							<div ng-message-exp="['required']">
+								This is required.
+							</div>
+						</div>
+					</md-input-container>
+				</div>
+			</div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row">
+			<md-button data-dismiss="modal" ng-click="ctrl.clearForm(projectForm)" class="md-raised md-default">
+				<i class="fa fa-eraser"> </i> Clear
+			</md-button>
+			<span flex></span>
+			<md-button data-dismiss="modal" ng-click="ctrl.save(projectForm)" class="md-raised md-primary">
+				<i class="fa fa-floppy-o"> </i> Submit
+			</md-button>
+			<md-button data-dismiss="modal" ng-click="ctrl.close()" class="md-raised md-secondary">
+				<i class="fa fa-times"> </i> Cancel
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

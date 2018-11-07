@@ -1,0 +1,7 @@
+Hi {{user}},
+
+	Following resources have not filled their timesheet for the week {{startDate}} to {{endDate}}:
+{{resources}}
+
+Regards,
+Team Orion.

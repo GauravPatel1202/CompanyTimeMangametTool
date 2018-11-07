@@ -1,0 +1,228 @@
+<div id="content" class="container-fluid timesheetCont">
+	<div layout="row" class="or-page-header">
+		<div flex="95" ng-bind="viewObj.managerMode ? 'Timesheet Approval' : 'Timesheet Entry'"></div>
+		<div flex="10" class="text-right" ng-if="viewObj.editMode && viewObj.managerMode">Edit Mode</div>
+	</div>
+	<div class="table-responsive" id="scrollTimeSheet">
+		<form name="timesheetForm" class="timesheet-form">
+			<div layout="row">
+				<md-input-container class="md-block" flex="20">
+					<label>Select Period</label>
+					<md-datepicker ng-model="viewObj.selectedDate" ng-change="viewObj.setSelectedWeek()" name="chosenDate" onkeydown="return false;"
+					 md-open-on-focus>
+					</md-datepicker>
+					<div ng-messages="(timesheetForm.$submitted || timesheetForm.chosenDate.$touched) && timesheetForm.chosenDate.$error" role="alert">
+						<div ng-message-exp="['required']">
+							This is required.
+						</div>
+					</div>
+				</md-input-container>
+				<div flex="1" layout="column" ng-if="viewObj.rejectComment">
+					<div flex="25"></div>
+					<button uib-popover="{{viewObj.rejectComment}}" popover-title="Reject Comments" popover-trigger="'focus'" popover-placement="right"
+					 class="icon-btn">
+						<md-tooltip ng-if="viewObj.tooltipVisible" md-visible="true" md-direction="top" class="reject-tooltip warning-tooltip">Click here to see the reject comments</md-tooltip>
+						<i class="fa fa-info-circle text-warn reject-icon"></i>
+					</button>
+				</div>
+				<div flex="2"></div>
+				<md-input-container class="md-block" flex="15" ng-if="viewObj.managerMode">
+					<label>Resource Name</label>
+					<md-select required placeholder="Resource Name" name="resource" ng-model="viewObj.resource" ng-model-options="{trackBy: '$value.id'}">
+						<md-option ng-value="resource" ng-repeat="resource in viewObj.resources">{{resource.empName}}</md-option>
+					</md-select>
+					<div ng-messages="(timesheetForm.$submitted || timesheetForm.resource.$touched) && timesheetForm.resource.$error">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+				<div flex="5"></div>
+				<div flex="5" layout="column" ng-if="viewObj.managerMode">
+					<div flex="10"></div>
+					<md-button flex="40" class="md-raised md-primary" ng-click="viewObj.fetchTimesheet(timesheetForm)">
+						Go
+						<i class="fa fa-arrow-right"> </i>
+					</md-button>
+					<div flex="50"></div>
+				</div>
+				<div flex="35"></div>
+				<div flex="40" layout="row" layout-align="end" ng-if="viewObj.managerMode">
+					<div layout="row" ng-if="!viewObj.reportView">
+						<div layout="column">
+							<div flex="5"></div>
+							<md-button class="md-raised md-save" ng-if="!viewObj.editMode" ng-click="viewObj.editTimesheet(timesheetForm)">Edit</md-button>
+						</div>
+						<div layout="column">
+							<div flex="5"></div>
+							<md-button flex="40" class="md-raised md-secondary" ng-if="viewObj.editMode" ng-click="viewObj.fetchTimesheet(timesheetForm)">
+								Cancel Editing
+							</md-button>
+						</div>
+						<div layout="column">
+							<div flex="5"></div>
+							<md-button flex="5" class="md-raised md-save" ng-click="viewObj.addRow()" ng-if="viewObj.editMode">
+								<i class="fa fa-plus"></i> Add
+							</md-button>
+						</div>
+					</div>
+					<div layout="row" layout-align="end" ng-if="!viewObj.editMode">
+						<md-switch class="md-primary" md-no-ink ng-model="viewObj.reportView" flex-gt-sm>
+							<strong>Report View</strong>
+						</md-switch>
+					</div>
+				</div>
+				<div ng-if="!viewObj.managerMode && viewObj.canAddRows" flex="40" layout="row" layout-align="end">
+					<div layout="column">
+						<div flex="5"></div>
+						<md-button flex="5" class="md-raised md-save" ng-click="viewObj.addRow()">
+							<i class="fa fa-plus"></i> Add
+						</md-button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<table class="table table-bordered" ng-if="!viewObj.reportView">
+			<thead>
+				<tr>
+					<th width="10%">Project</th>
+					<th width="10%">Task Name</th>
+					<th width="3%">Estimated Hours</th>
+					<th width="3%">Hours Left</th>
+					<th width="7%" ng-repeat="date in viewObj.timeSheet">
+						{{date.displayDay}}
+						<p>{{date.displayDate}}</p>
+					</th>
+					<th width="4%">
+						Total hours spent
+					</th>
+					<th width="3%" ng-if="viewObj.editMode">
+						Delete
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in viewObj.projects" ng-class="{'disabled-row': ( viewObj.managerMode && viewObj.managerProjects.indexOf(row.project.id) < 0 && !row.newRow)}">
+					<td width="10%">
+						<md-select placeholder="Select Project" class="timesheetdropdown" ng-if="row.newRow" ng-model="row.project" ng-disabled="!row.newRow"
+						 ng-change="viewObj.getTaskList(row.project,$index,$event,row)">
+							<md-option ng-value="x" ng-repeat="x in viewObj.projectlist track by x.id">{{ x.projectName }}</md-option>
+						</md-select>
+						<div class="taskdropdown" ng-if="!row.newRow">{{row.project.projectName}}</div>
+					</td>
+					<td width="10%">
+						<md-select placeholder="Select Task" class="timesheetdropdown" ng-if="row.newRow && row.taskList.length > 0" ng-model="row.task"
+						 ng-disabled="!row.newRow">
+							<md-option ng-value="x" ng-repeat="x in row.taskList track by x.id">{{ x.taskName }}</md-option>
+						</md-select>
+						<div class="taskdropdown" ng-if="!row.newRow">
+							{{row.task.taskName}}
+							<button ng-if="row.task.description" uib-popover-template="viewObj.descriptionUrl" popover-title="Task Description" popover-append-to-body="true"
+							 popover-trigger="'outsideClick'" popover-placement="top" class="icon-btn">
+								<i class="fa fa-info-circle text-info"></i>
+							</button>
+						</div>
+						<div class="taskdropdown" ng-if="row.newRow && row.taskList.length == 0">No More Assigned Tasks</div>
+					</td>
+					<td width="3%">
+						<div ng-if="!row.project.globalProject">{{row.task.estimatedHours}}</div>
+						<div ng-if="row.project.globalProject">NA</div>
+					</td>
+					<td width="3%">
+						<div ng-if="row.task.maxHours!=0 && !row.project.globalProject">{{row.task.hoursLeft | round}}</div>
+						<div ng-if="row.task.maxHours==0 || row.project.globalProject">NA</div>
+					</td>
+					<td width="7%" ng-repeat="(key,column) in row.times" class="time-input-container time-box" ng-class="{'weekend': viewObj.timeSheet[key].day == 0 || viewObj.timeSheet[key].day == 6 || viewObj.holidays.indexOf(key) >= 0 }">
+						<input class="timeInput" ng-disabled="!row.project || row.task.jiraImport || ((!row.project.globalProject && !row.approver) && role != 'Team Member' && !row.newRow) || !row.task || viewObj.isValidDate(row.task.startDate,row.task.endDate,key,row.project.startDate,row.project.endDate,row.project) || (column.status && (column.status.id === 2 || (column.status.id === 1 && !viewObj.managerMode)) || !viewObj.editMode || ( viewObj.managerMode && viewObj.managerProjects.indexOf(row.project.id) < 0)) || !row.task.status"
+						 ng-class="{
+                         	'valueEntered': !column.status && column.hoursSpent > 0,
+                         	'saved': column.status.id == 4 ,
+                         	'approved': column.status.id == 2,
+                         	'submitted': column.status.id == 1,
+                         	'rejected': column.status.id == 3}" type="text" ng-model="column.hoursSpent" ng-init="viewObj.initTotal(key,column,row)"
+						 ng-blur="viewObj.updateTotal(key,column.hoursSpent,column.oldValue,column,$event,row)" ng-focus="column.oldValue=column.hoursSpent">
+						<button uib-popover-template="viewObj.hoursDescriptionUrl" popover-title="Comments" popover-append-to-body="true" popover-trigger="'outsideClick'"
+						 popover-placement="top" class="icon-btn hour-desc-btn" ng-if="row.project && row.task" tabindex="-1">
+							<i ng-class="{
+								'fa-comment': (column.comments && column.comments.length > 0),
+								'fa-comment-o': !column.comments}" class="fa text-bold text-info"></i>
+						</button>
+					</td>
+					<td width="4%">
+						<span class="text-bold">{{row.totalHrsSpent}}</span>
+					</td>
+					<td width="3%" ng-if="viewObj.editMode">
+						<span>
+							<md-tooltip md-direction="top">Delete</md-tooltip>
+							<i tabindex="-1" class="glyphicon glyphicon-trash icon-delete-row text-red delete-row" ng-click="viewObj.removeRow($index,row,$event)"></i>
+						</span>
+					</td>
+				</tr>
+				<tr ng-hide="(!viewObj.projects || (viewObj.projects && viewObj.projects.length === 0))" class="text-bold">
+					<td colspan="4" align="right" class="totalHours text-bold">
+						Total Hours
+					</td>
+					<td ng-repeat="(key,total) in viewObj.totalHours" class="text-bold" ng-class="{'weekend': viewObj.timeSheet[key].day == 0 || viewObj.timeSheet[key].day == 6 || viewObj.holidays.indexOf(key) >= 0 }">
+						{{total.sum}} </td>
+					</td>
+					<td class="text-bold">{{viewObj.weeklySum}}</td>
+					<td ng-if="viewObj.editMode"></td>
+				</tr>
+				<tr ng-show="viewObj.managerMode && ((viewObj.projects && viewObj.projects.length === 0) || !viewObj.projects)">
+					<td colspan="5" ng-show="!viewObj.projectlist && !viewObj.projectlist.length > 0"> No Entries available</td>
+					<td colspan="12" ng-show="viewObj.projectlist && viewObj.projectlist.length > 0"> No Entries available</td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="grid1" ui-grid="viewObj.reportGridOptions" class="grid report-grid" ng-if="viewObj.managerMode && viewObj.reportView"
+		 ui-grid-grouping>
+			<div class="watermark" ng-show="!viewObj.reportGridOptions.data.length">No records available</div>
+		</div>
+	</div>
+	<div class="bd-example text-right">
+		<md-button ng-if="(!viewObj.managerMode || viewObj.editMode) && (viewObj.managerMode || viewObj.canAddRows)" ng-disabled="!viewObj.saveEnabled"
+		 class="md-raised md-save" ng-click="viewObj.saveWeekEntry()">
+			<i class="fa fa-floppy-o"> </i> Save
+		</md-button>
+		<md-button ng-if="(!viewObj.managerMode || viewObj.editMode) && (viewObj.managerMode || viewObj.canAddRows)" ng-disabled="!viewObj.saveEnabled && !viewObj.submitEnabled"
+		 class="md-raised md-primary" ng-click="viewObj.submitWeekEntry()">
+			<i class="fa fa-check"> </i> Submit
+		</md-button>
+		<md-button ng-if="viewObj.managerMode && !viewObj.editMode" class="md-raised md-primary" ng-click="viewObj.approveEntries()">
+			<i class="fa fa-check"> </i> Approve
+		</md-button>
+		<md-button ng-if="viewObj.managerMode && !viewObj.editMode" class="md-raised md-secondary" ng-click="viewObj.rejectEntries()">
+			<i class="fa fa-times"> </i> Reject
+		</md-button>
+		<div class="col-md-6 time-sheet-legend text-left">
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-blue"></div>
+				</div>
+				<div class="col-md-9">Saved</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-yellow"></div>
+				</div>
+				<div class="col-md-9">Submitted</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-green"></div>
+				</div>
+				<div class="col-md-9">Approved</div>
+			</div>
+			<div class="col-md-3">
+				<div class="col-md-3">
+					<div class="legend-box box-red"></div>
+				</div>
+				<div class="col-md-9">Rejected</div>
+			</div>
+		</div>
+	</div>
+	<hr/>
+</div>
+<script>
+	$(document).ready(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>

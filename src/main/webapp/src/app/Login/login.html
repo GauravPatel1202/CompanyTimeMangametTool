@@ -1,0 +1,75 @@
+<div layout-fill ng-controller="loginCtrl as loginObj">
+	<md-content flex class="md-padding full-view-height" layout-xs="column" layout="row" layout-align="center center">
+		<div flex-xs flex-gt-xs="40" layout="column">
+			<md-card class="card-40-center">
+				<md-card-header class="login-header">
+					<md-card-header-text>
+						<span class="md-headline text-center">
+							<ng-template ng-if="!loginCtrl.$forgotPassword">Orion Login</ng-template>
+							<ng-template ng-if="loginCtrl.$forgotPassword">Reset Password</ng-template>
+						</span>
+					</md-card-header-text>
+				</md-card-header>
+				<md-card-content ng-if="!loginCtrl.$forgotPassword">
+					<form class="form-horizontal" method="get" name="loginForm" novalidate>
+						<div class="md-padding" layout-align="center">
+							<div layout="row">
+								<md-input-container md-no-float class="md-icon-float md-block" flex-gt-sm>
+									<md-icon md-svg-src="assets/img/ic_person_24px.svg" class="name"></md-icon>
+									<input name="userName" maxlength="4" ng-pattern="/^[0-9]{4}$/" ng-model="loginObj.username" type="text" placeholder="Employee ID"
+									 required>
+									<div ng-messages="(loginForm.$submitted || loginForm.userName.$touched) && loginForm.userName.$error">
+										<div ng-message="required">This is required.</div>
+										<div ng-message="pattern">ID must be a 4 digit number.</div>
+									</div>
+								</md-input-container>
+							</div>
+							<div layout="row">
+								<md-input-container md-no-float class="md-icon-float md-block" flex-gt-sm>
+									<md-icon md-svg-src="assets/img/ic_lock_24px.svg" class="name"></md-icon>
+									<input type="password" name="password" ng-model="loginObj.password" placeholder="Password" required>
+									<div ng-messages="(loginForm.$submitted || loginForm.password.$touched) && loginForm.password.$error">
+										<div ng-message="required">This is required.</div>
+									</div>
+								</md-input-container>
+							</div>
+						</div>
+						<md-card-actions layout="row">
+							<md-button class="md-raised md-default" ng-click="loginCtrl.$forgotPassword = !loginCtrl.$forgotPassword">Forgot Password?</md-button>
+							<span flex></span>
+							<button class="btn btn-primary pull-right" ng-click="loginObj.validateLogin(loginForm)">Log in</button>
+						</md-card-actions>
+					</form>
+				</md-card-content>
+				<md-card-content ng-if="loginCtrl.$forgotPassword">
+					<form class="form-horizontal" method="get" name="forgotPasswordForm" novalidate>
+						<div class="md-padding" layout-align="center">
+							<div layout="row">
+								<md-input-container md-no-float class="md-icon-float md-block" flex-gt-sm>
+									<md-icon md-svg-src="assets/img/ic_person_24px.svg" class="name"></md-icon>
+									<input name="userName" maxlength="4" ng-pattern="/^[0-9]{4}$/" ng-model="loginObj.username" type="text" placeholder="Employee ID"
+									 required>
+									<div ng-messages="(forgotPasswordForm.$submitted || forgotPasswordForm.userName.$touched) && forgotPasswordForm.userName.$error">
+										<div ng-message="required">This is required.</div>
+										<div ng-message="pattern">ID must be a 4 digit number.</div>
+									</div>
+								</md-input-container>
+							</div>
+						</div>
+						<md-card-actions layout="row">
+							<md-button class="md-raised md-default" ng-click="loginCtrl.$forgotPassword = !loginCtrl.$forgotPassword">Back to login</md-button>
+							<span flex></span>
+							<button class="btn btn-primary" ng-click="loginObj.resetPassword(forgotPasswordForm)" data-dismiss="modal">Reset</button>
+						</md-card-actions>
+					</form>
+				</md-card-content>
+			</md-card>
+		</div>
+		<div flex="10"></div>
+		<div flex-xs flex-gt-xs="40" layout="column" layout-align="end" class="align-center">
+			<jk-carousel data="loginCtrl.dataArray" item-template-url="loginCtrl.templateUrl" max-width="660" max-height="400"
+			 auto-slide-time="1500">
+			</jk-carousel>
+			<!-- <img src="assets/img/login-logo.svg" class="md-card-image" flex="30" width="300" height="150" alt="Washed Out"> -->
+		</div>
+	</md-content>
